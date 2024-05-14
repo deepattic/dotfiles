@@ -1,0 +1,2 @@
+# Stop adding pycache folder
+.config/qtile/__pycache__

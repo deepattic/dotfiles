@@ -56,27 +56,22 @@ keys = [
 
 from libqtile.config import Group
 
-groups = [Group(i) for i in "123456789"]
+groups_text = ['1','2','3','4','5','6','7','8','9']
+groups = [Group(name=str(name),label=label) for name,label in enumerate(groups_text, start=1)]
 
 for i in groups:
     keys.extend(
         [
-            # mod1 + group number = switch to group
             Key(
                 f"M-{i.name}",
                 lazy.group[i.name].toscreen(),
-                desc="Switch to group {}".format(i.name),
+                desc="Switch to group {}".format(i.label),
             ),
-            # mod1 + shift + group number = switch to & move focused window to group
             Key(
                 f"M-S-{i.name}",
-                lazy.window.togroup(i.name, switch_group=True),
-                desc="Switch to & move focused window to group {}".format(i.name),
+                lazy.window.togroup(i.name, switch_group=False),
+                desc="Switch to & move focused window to group {}".format(i.label),
             ),
-            # Or, use below if you prefer not to switch to that group.
-            # # mod1 + shift + group number = move focused window to group
-            # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-            #     desc="move focused window to group {}".format(i.name)),
         ]
     )
 

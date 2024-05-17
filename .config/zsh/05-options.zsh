@@ -7,4 +7,6 @@ for env in "${env[@]}"; do
 done
 
 . "$HOME/.cargo/env"
+eval "$(zoxide init --cmd cd zsh)"
+eval "$(fzf --zsh)"
 eval "$(starship init zsh)"

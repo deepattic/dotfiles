@@ -73,3 +73,5 @@ done
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(fzf --zsh)"
 eval "$(starship init zsh)"
+
+export GPG_TTY=$(tty)

@@ -2,9 +2,17 @@ from libqtile import bar, layout, qtile, widget
 from libqtile.config import Match, Screen
 
 from keybinds import *
+from colors import default_theme as colors
+
+layout_theme = {
+    "border_width": 2,
+    "margin": 3,
+    "border_focus": colors["pine"],
+    "border_normal": colors["base"]
+}
 
 layouts = [
-    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], border_width=2),
+    layout.Columns(**layout_theme),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
@@ -36,7 +44,12 @@ screens = [
                 ),
                 # widget.CurrentLayout(),
                 widget.GroupBox(
-                    highlight_method='text',
+                    active=colors["foam"],
+                    inactive=colors["muted"],
+                    highlight_method='line',
+                    highlight_color=colors["overlay"],
+                    this_screen_border = colors["love"],
+                    this_current_screen_border = colors["foam"],
                 ),
                 widget.Prompt(),
                 widget.WindowName(),
@@ -51,6 +64,7 @@ screens = [
                 widget.QuickExit(),
             ],
             24,
+            background = colors["surface"]
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),

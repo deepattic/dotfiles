@@ -61,6 +61,12 @@ for env in "${env[@]}"; do
     export $env
 done
 
+# if [ -z "$TMUX" ]; then
+#     tmux new
+# else
+#     tmux a
+# fi
+
 
 
 . "$HOME/.cargo/env"

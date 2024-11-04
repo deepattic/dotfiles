@@ -55,10 +55,51 @@ keys = [
 ]
 
 from libqtile.config import Group
+mpv_group = {
+    "label": "mpv",
+}
+define_groups = [{}, {}, {}, {}, {}, {}, {}, {**mpv_group}, {}]
+groups = [
+    Group(name=str(idx), **group)
+    for idx, group in enumerate(
+        # [
+        #     {
+        #         # "label": "term",
+        #         # restrict layouts since tiling is handled by kitty
+        #         # "layouts": [layout.Max()], 
+        #         "matches": [
+        #             # Match(func=is_terminal),
+        #         ],
+        #     },
+        #     {
+        #         # "label": "browser",
+        #         "matches": [
+        #             # Match(role="browser"),
+        #         ],
+        #     },
+        #     {
+        #         # "label": "music",
+        #         "matches": [
+        #             # Match(title="YouTube Music"),
+        #         ],
+        #     },
+        #     {
+        #         # "label": "text editor",
+        #         "matches": [
+        #         # Match(func=is_text_editor)
+        #     ]
+        #      },
+        #     # {"label": "other"},
+        #     {},
+        # ],
+        define_groups,
+        start=1,
+    )
+]
 
-groups_text = ['1','2','3','4','5','6','7','8','9']
-groups = [Group(name=str(name),label=label) for name,label in enumerate(groups_text, start=1)]
-
+# groups_text = ['1','2','3','4','5','6','7','8','9']
+# groups = [Group(name=str(name),label=label) for name,label in enumerate(groups_text, start=1)]
+#
 for i in groups:
     keys.extend(
         [

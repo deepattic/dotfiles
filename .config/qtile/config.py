@@ -1,8 +1,84 @@
 from libqtile import bar, layout, qtile, widget
 from libqtile.config import Match, Screen
+from libqtile.config import EzKey as Key
+from libqtile.config import EzClick, EzDrag
+from libqtile.lazy import lazy
+from libqtile.config import Group
 
-from keybinds import *
 from colors import default_theme as colors
+
+menu = "dmenu_run -p \"Run:\" -b"
+file_manager = "thunar"
+wezterm = "wezterm --config-file=.config/wezterm/wezterm.lua"
+terminal = wezterm 
+
+keys = [
+    Key("M-h", lazy.layout.left(), desc="Move focus to left"),
+    Key("M-l", lazy.layout.right(), desc="Move focus to right"),
+    Key("M-j", lazy.layout.down(), desc="Move focus down"),
+    Key("M-k", lazy.layout.up(), desc="Move focus up"),
+    Key("M-n", lazy.layout.next(), desc="Move window focus to other window"),
+    Key("M-<space>", lazy.spawn(menu), desc="Move window focus to other window"),
+    Key("M-S-h", lazy.layout.shuffle_left(), desc="Move window to the left"),
+    Key("M-S-l", lazy.layout.shuffle_right(), desc="Move window to the right"),
+    Key("M-S-j", lazy.layout.shuffle_down(), desc="Move window down"),
+    Key("M-S-k", lazy.layout.shuffle_up(), desc="Move window up"),
+    Key("M-C-h", lazy.layout.grow_left(), desc="Grow window to the left"),
+    Key("M-C-l", lazy.layout.grow_right(), desc="Grow window to the right"),
+    Key("M-C-j", lazy.layout.grow_down(), desc="Grow window down"),
+    Key("M-C-k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key("M-C-n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key(
+        "M-S-<return>",
+        lazy.spawn(file_manager),
+        desc="Toggle between split and unsplit sides of stack",
+    ),
+    Key("M-<return>", lazy.spawn(terminal), desc="Launch terminal"),
+    Key("M-<tab>", lazy.next_layout(), desc="Toggle between layouts"),
+    Key("M-S-w", lazy.window.kill(), desc="Kill focused window"),
+    Key(
+        "M-f",
+        lazy.window.toggle_fullscreen(),
+        desc="Toggle fullscreen on the focused window",
+    ),
+    Key("M-t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
+    Key("M-C-r", lazy.reload_config(), desc="Reload the config"),
+    Key("M-C-q", lazy.shutdown(), desc="Shutdown Qtile"),
+    Key("M-r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+]
+
+mpv_group = {
+    "label": "mpv",
+    "layouts": [layout.Max()],
+    "matches": [
+        Match(wm_class="mpv"),
+    ],
+}
+web_group = {
+    "label": "www",
+    "matches":[Match(wm_class="Firefox")],
+}
+define_groups = [{}, {**web_group}, {}, {}, {}, {}, {}, {**mpv_group}, {}]
+groups = [
+    Group(name=str(idx), **group)
+    for idx, group in enumerate(define_groups, start=1)
+]
+
+for i in groups:
+    keys.extend(
+        [
+            Key(
+                f"M-{i.name}",
+                lazy.group[i.name].toscreen(),
+                desc="Switch to group {}".format(i.label),
+            ),
+            Key(
+                f"M-S-{i.name}",
+                lazy.window.togroup(i.name, switch_group=False),
+                desc="Switch to & move focused window to group {}".format(i.label),
+            ),
+        ]
+    )
 
 layout_theme = {
     "border_width": 2,
@@ -74,6 +150,14 @@ screens = [
         # x11_drag_polling_rate = 60,
     ),
 ]
+
+# Drag floating layouts.
+mouse = [
+    EzDrag("M-1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
+    EzDrag("M-3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    EzClick("M-2", lazy.window.bring_to_front()),
+]
+
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True

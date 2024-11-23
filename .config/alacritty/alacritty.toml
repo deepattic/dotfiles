@@ -1,0 +1,31 @@
+# alacritty.toml
+
+[general]
+import = [
+	"~/.config/alacritty/gruvbox_material_medium_dark.toml",
+]
+live_config_reload = true
+
+[window]
+padding = { x = 10, y = 5 }
+dynamic_padding = true
+
+[font]
+size                = 11
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style  = "Regular"
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style  = "Bold"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style  = "Italic"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style  = "Bold Italic"
+
